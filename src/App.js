@@ -1,57 +1,57 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
+import React, { useEffect } from 'react';
 import './App.css';
+import 'antd/dist/antd.css'
+import Drawer from './components/Drawer/Drawer';
+import Header from './components/Header';
+import Home from './components/Home';
+import {BrowserRouter as Router, Route} from 'react-router-dom'
+import { useDispatch } from 'react-redux';
+import { fetchSneakers, fetchSneakersInCart, fetchSneakersInFavorite, loadOrders } from './features/cart/cartSlice';
+import Favorite from './components/Favorite/Favorite';
+import Order from './components/Drawer/Order';
 
 function App() {
+
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(fetchSneakers())
+
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(fetchSneakersInCart())
+  }, [dispatch])
+  useEffect(() => {
+    dispatch(fetchSneakersInFavorite())
+  }, [dispatch])
+  useEffect(() => {
+    dispatch(loadOrders())
+  } , [dispatch])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+    <Router>
+
+    <div className="wrapper clear">
+    <Header />
+      <Route exact path='/drawer'>
+      <Drawer />
+      <Home />
+      </Route>
+      <Route exact path='/'>
+      <Home />
+      </Route>
+      <Route exact path='/favorite'>
+      <Favorite/>
+      </Route>
+      <Route exact path='/orders'>
+      <Order/>
+      </Route>
+    
+
+    
+
+     
     </div>
+    </Router>
   );
 }
 
